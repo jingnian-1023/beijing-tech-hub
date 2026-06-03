@@ -869,9 +869,6 @@ function renderNewsCard(item) {
   return '<div class="news-card animate-in"'+onClick+'><div></div><div class="news-card-body"><div class="news-card-meta"><span class="tag '+t.cls+'">'+t.label+'</span>'+(item.isNew?'<span class="new-indicator">NEW</span>':'')+'</div><div class="news-card-title">'+item.title+'</div><div class="news-card-excerpt">'+item.excerpt+'</div><div class="news-card-footer"><span class="news-card-time">'+item.time+'</span><span class="news-card-source">'+item.source+'</span>'+linkHtml+'</div></div></div>';
 }
 
-  return '<div class="news-card-body"><div...  // same line 870 in original
-}
-
 function renderSubsidyCard(item) {
   var isUrgent = item.deadline !== "常年申报" && item.deadline !== "各区不同";
   var cardId = 'subsidy-detail-' + item.id;
