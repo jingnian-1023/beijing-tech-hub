@@ -958,6 +958,7 @@ function toggleSubsidyDetail(id) {
 }
 
 function renderConfCard(item) {
+  if (!item.title || item.title.trim() === '') return ''; // 空标题骨架跳过
   var statusCls = 'conf-status-'+item.status;
   var tagsHtml = (item.tags||[]).map(function(t){return '<span class="tag tag-news">'+t+'</span>';}).join("");
   var metaHtml = '';
@@ -1009,7 +1010,7 @@ function renderUrgentSubsidies() {
 
 // 今日速递 - 本周会议
 function renderComingEvents() {
-  var evts = ALL_DATA.filter(function(d){ return d.type==='event' && (d.status==='open'||d.status==='soon'); }).slice(0, 3);
+  var evts = ALL_DATA.filter(function(d){ return d.type==='event' && d.title && d.title.trim() && (d.status==='open'||d.status==='soon'); }).slice(0, 3);
   var el = document.getElementById("today-coming-events");
   if (!el) return;
   el.innerHTML = evts.map(function(e){
@@ -1132,7 +1133,7 @@ function initAllPages() {
   var sel = document.getElementById("subsidy-grid");
   if (sel) sel.innerHTML = ALL_DATA.filter(function(d){return d.type==='subsidy';}).map(renderSubsidyCard).join("");
   var evl = document.getElementById("conf-list");
-  if (evl) evl.innerHTML = ALL_DATA.filter(function(d){return d.type==='event';}).map(renderConfCard).join("");
+  if (evl) evl.innerHTML = ALL_DATA.filter(function(d){return d.type==='event' && d.title && d.title.trim();}).map(renderConfCard).join("");
 }
 
 // ─── 全部动态（归档检索） ───
@@ -1323,7 +1324,7 @@ function bindFilter(barId, listId, typeFilter, fieldKey) {
 
 bindFilter("filter-all-bar", "main-news-list",
   function(){
-    return ALL_DATA.filter(function(d){ return ["policy","news","corp","subsidy","event"].indexOf(d.type)>=0 && d.time >= __WEEK_AGO; })
+    return ALL_DATA.filter(function(d){ return ["policy","news","corp","subsidy","event"].indexOf(d.type)>=0 && d.time >= __WEEK_AGO && d.title && d.title.trim(); })
       .sort(function(a,b){
         var wa = a.isNew ? 1 : 0;
         var wb = b.isNew ? 1 : 0;
