@@ -69,34 +69,91 @@ async def _run() -> dict:
     json_str = json.dumps(data, ensure_ascii=False, indent=2) + "\n"
     logger.info("[2/3] Formatted %d items to JSON (%.1f KB)", len(output), len(json_str) / 1024)
 
-    # ── 3. 推送到 GitHub ──
-    token = os.environ.get("GITHUB_TOKEN", "")
+    # ── 3. 拉取 static-data.json 并合并 ──
     repo = os.environ.get(
         "GITHUB_REPO", "jingnian-1023/beijing-tech-hub"
     )
+    token = os.environ.get("GITHUB_TOKEN", "")
 
     if not token:
         logger.error("GITHUB_TOKEN environment variable not set")
         return {"status": "error", "message": "GITHUB_TOKEN not set"}
 
+    merged = await _merge_with_static(output, token, repo)
+    if merged:
+        logger.info("[3/4] Merged with static-data.json: %d total items", len(merged))
+        output = merged
+    else:
+        logger.warning("[3/4] static-data.json fetch failed, using collected data only")
+
+    json_str = json.dumps({
+        "updated": str(items[0].time if items else ""),
+        "count": len(output),
+        "items": output,
+        "source": "merged",
+    }, ensure_ascii=False, indent=2) + "\n"
+    logger.info("[3/4] Final JSON: %d items (%.1f KB)", len(output), len(json_str) / 1024)
+
+    # ── 4. 推送到 GitHub ──
     push_ok = await _push_data_json(json_str, token, repo)
     if push_ok:
-        logger.info("[3/3] Successfully pushed data.json to GitHub")
+        logger.info("[4/4] Successfully pushed data.json to GitHub")
         return {
             "status": "ok",
             "count": len(output),
-            "updated": data["updated"],
+            "updated": output[0]["time"] if output else "",
             "pushed": True,
         }
     else:
-        # push failed but collection succeeded
         return {
             "status": "partial",
             "count": len(output),
-            "updated": data["updated"],
+            "updated": output[0]["time"] if output else "",
             "pushed": False,
             "message": "Collection OK but GitHub push failed",
         }
+
+
+async def _merge_with_static(collected: list, token: str, repo: str) -> list | None:
+    """拉取 static-data.json，合并采集的 news/policy 进去后返回完整列表。"""
+    url = f"https://api.github.com/repos/{repo}/contents/static-data.json"
+    headers = {
+        "Authorization": f"Bearer {token}",
+        "Accept": "application/vnd.github+json",
+    }
+    async with httpx.AsyncClient(timeout=15) as client:
+        try:
+            resp = await client.get(url, headers=headers)
+            if resp.status_code != 200:
+                logger.warning("static-data.json fetch: HTTP %d", resp.status_code)
+                return None
+            body = resp.json()
+            import base64
+            raw = base64.b64decode(body["content"]).decode("utf-8")
+            static = json.loads(raw)
+        except Exception as e:
+            logger.warning("static-data.json parse failed: %s", e)
+            return None
+
+    static_items = static.get("items", [])
+    # 保留 static 中不是 news/policy 的条目（corp/subsidy/event）
+    kept = [s for s in static_items if s.get("type") not in ("news", "policy")]
+
+    # collected 中的 news/policy 替换 static 中的
+    merged = kept + collected
+
+    # 去重
+    seen = set()
+    deduped = []
+    for item in merged:
+        key = item.get("url", "") or item.get("title", "")[:50]
+        if key not in seen:
+            seen.add(key)
+            deduped.append(item)
+
+    logger.info("Merge: kept=%d static + %d collected = %d deduped",
+                len(kept), len(collected), len(deduped))
+    return deduped
 
 
 async def _push_data_json(content: str, token: str, repo: str) -> bool:
