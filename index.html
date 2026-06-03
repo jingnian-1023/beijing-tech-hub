@@ -959,16 +959,16 @@ function toggleSubsidyDetail(id) {
 
 function renderConfCard(item) {
   var statusCls = 'conf-status-'+item.status;
-  var tagsHtml = item.tags.map(function(t){return '<span class="tag tag-news">'+t+'</span>';}).join("");
+  var tagsHtml = (item.tags||[]).map(function(t){return '<span class="tag tag-news">'+t+'</span>';}).join("");
   var metaHtml = '';
   if (item.location) metaHtml += '<span class="conf-meta-item">&#x1F4CD; '+item.location+'</span>';
-  if (item.organizer) metaHtml += '<span class="conf-meta-item">&#x1F3DB; '+item.organizer+'</span>';
+  if (item.org) metaHtml += '<span class="conf-meta-item">&#x1F3DB; '+item.org+'</span>';
   if (item.host) metaHtml += '<span class="conf-meta-item">&#x1F3A4; '+item.host+'</span>';
   if (metaHtml) metaHtml = '<div class="conf-meta">'+metaHtml+'</div>';
   var btn = item.status !== "end"
     ? '<button class="conf-register" onclick="event.stopPropagation();window.open(\''+item.url+'\',\'_blank\')">报名参会 &#x2197;</button>'
     : '<button class="conf-register" style="opacity:.45;cursor:default">已结束</button>';
-  return '<div class="conf-card animate-in" onclick="window.open(\''+item.url+'\',\'_blank\')"><div class="conf-date-col"><span class="conf-date-month">'+item.month+'</span><span class="conf-date-day">'+item.day+'</span><span class="conf-date-year">'+item.year+'</span></div><div><div class="conf-name">'+item.name+'</div><div class="conf-detail">'+item.detail+'</div>'+metaHtml+'<div class="conf-tags">'+tagsHtml+'</div></div><div class="conf-right"><span class="conf-status '+statusCls+'">'+item.statusText+'</span>'+btn+'</div></div>';
+  return '<div class="conf-card animate-in" onclick="window.open(\''+item.url+'\',\'_blank\')"><div class="conf-date-col"><span class="conf-date-month">'+item.month+'</span><span class="conf-date-day">'+item.day+'</span><span class="conf-date-year">'+item.year+'</span></div><div><div class="conf-name">'+item.title+'</div><div class="conf-detail">'+(item.excerpt||'')+'</div>'+metaHtml+'<div class="conf-tags">'+tagsHtml+'</div></div><div class="conf-right"><span class="conf-status '+statusCls+'">'+item.statusText||item.status||''+'</span>'+btn+'</div></div>';
 }
 
 function todayCardColor(type) {
@@ -1004,7 +1004,7 @@ function renderUrgentSubsidies() {
   var el = document.getElementById("today-urgent-subsidies");
   if (!el || !urgents.length) { if(el) el.innerHTML=''; return; }
   var s = urgents[0];
-  el.innerHTML = '<div class="today-alert-icon">&#9888;</div><div class="today-alert-body"><div class="today-alert-title">'+s.title+' — 截止：'+s.deadline+'</div><div class="today-alert-desc">'+s.desc.substring(0,120)+'...  |  <a href="'+s.url+'" target="_blank" style="color:var(--accent-gold);text-decoration:underline;">立即申报</a></div></div>';
+  el.innerHTML = '<div class="today-alert-icon">&#9888;</div><div class="today-alert-body"><div class="today-alert-title">'+s.title+' — 截止：'+s.deadline+'</div><div class="today-alert-desc">'+(s.desc||'').substring(0,120)+'...  |  <a href="'+s.url+'" target="_blank" style="color:var(--accent-gold);text-decoration:underline;">立即申报</a></div></div>';
 }
 
 // 今日速递 - 本周会议
@@ -1013,7 +1013,7 @@ function renderComingEvents() {
   var el = document.getElementById("today-coming-events");
   if (!el) return;
   el.innerHTML = evts.map(function(e){
-    return '<div class="today-quick-card" onclick="window.open(\''+e.url+'\',\'_blank\')"><div class="today-quick-card-label">'+e.month+' '+e.day+'</div><div class="today-quick-card-value">'+e.name+'</div><div style="font-size:11px;color:var(--text-muted);margin-top:4px;">'+e.detail.substring(0,28)+'...</div></div>';
+    return '<div class="today-quick-card" onclick="window.open(\''+e.url+'\',\'_blank\')"><div class="today-quick-card-label">'+e.month+' '+e.day+'</div><div class="today-quick-card-value">'+e.title+'</div><div style="font-size:11px;color:var(--text-muted);margin-top:4px;">'+(e.excerpt||'').substring(0,28)+'...</div></div>';
   }).join("");
 }
 
@@ -1050,7 +1050,7 @@ function initAllPages() {
       +'<a class="quick-link-item" href="https://www.zhongguancun.com.cn" target="_blank" rel="noopener"><div class="quick-link-icon" style="background:oklch(0.22 0.06 82/0.5)">&#128161;</div><div class="quick-link-body"><div class="quick-link-name">中关村示范区</div><div class="quick-link-desc">先行先试政策</div></div><span class="quick-link-arrow">&rarr;</span></a>'
       +'<a class="quick-link-item" href="https://jxj.beijing.gov.cn" target="_blank" rel="noopener"><div class="quick-link-icon" style="background:oklch(0.22 0.04 22/0.5)">&#128200;</div><div class="quick-link-body"><div class="quick-link-name">北京市经信局</div><div class="quick-link-desc">产业政策/专精特新</div></div><span class="quick-link-arrow">&rarr;</span></a>'
       +'</div></div>'
-      +'<div class="panel-card"><div class="panel-header"><span class="panel-title"><span class="panel-title-icon">&#9670;</span> 近期会议</span><span class="panel-more" onclick="switchPage(\'event\')">全部 &rarr;</span></div><div class="event-list">'+sideEvts.map(function(e){return '<div class="event-item" onclick="window.open(\''+e.url+'\',\'_blank\')"><div class="event-date-box"><span class="event-month">'+e.month+'</span><span class="event-day">'+e.day+'</span></div><div><div class="event-name">'+e.name+'</div><div class="event-meta">'+e.detail.substring(0,30)+'...</div></div></div>';}).join("")+'</div></div>'
+      +'<div class="panel-card"><div class="panel-header"><span class="panel-title"><span class="panel-title-icon">&#9670;</span> 近期会议</span><span class="panel-more" onclick="switchPage(\'event\')">全部 &rarr;</span></div><div class="event-list">'+sideEvts.map(function(e){return '<div class="event-item" onclick="window.open(\''+e.url+'\',\'_blank\')"><div class="event-date-box"><span class="event-month">'+e.month+'</span><span class="event-day">'+e.day+'</span></div><div><div class="event-name">'+e.title+'</div><div class="event-meta">'+(e.excerpt||'').substring(0,30)+'...</div></div></div>';}).join("")+'</div></div>'
       +'<div class="panel-card"><div class="panel-header"><span class="panel-title"><span class="panel-title-icon">&yen;</span> 热门补贴</span><span class="panel-more" onclick="switchPage(\'subsidy\')">全部 &rarr;</span></div><div class="subsidy-list">'+sideSubs.map(function(s){return '<div class="subsidy-item" onclick="window.open(\''+s.url+'\',\'_blank\')"><div class="subsidy-name">'+s.title+'</div><div><span class="subsidy-amount">'+s.amount+'</span><span class="subsidy-amount-unit">'+s.unit+'</span></div><div class="subsidy-deadline">&#9200; 截止：'+s.deadline+'</div></div>';}).join("")+'</div></div>';
   }
 
