@@ -311,18 +311,17 @@
     .subsidy-detail-list li::before { content: "·"; position: absolute; left: 4px; color: var(--accent-gold-dim); }
 
     .conf-list { display: flex; flex-direction: column; gap: 0; padding: 0 40px; }
-    .conf-card { display: grid; grid-template-columns: 80px 1fr auto; gap: 20px; padding: 20px 0; border-bottom: 1px solid var(--border-subtle); cursor: pointer; transition: background 0.15s; align-items: start; border-radius: var(--radius-sm); }
+    .conf-card { display: grid; grid-template-columns: 1fr auto; gap: 16px; padding: 16px 0; border-bottom: 1px solid var(--border-subtle); cursor: pointer; transition: background 0.15s, padding 0.2s var(--ease-out-quart); align-items: center; border-radius: var(--radius-sm); }
     .conf-card:hover { background: var(--bg-surface); padding-left: 12px; padding-right: 12px; margin: 0 -12px; }
-    .conf-date-col { display: flex; flex-direction: column; align-items: center; gap: 2px; }
-    .conf-date-month { font-size: 10px; font-weight: 600; color: var(--accent-gold-dim); letter-spacing: 0.06em; text-transform: uppercase; }
-    .conf-date-day { font-size: 28px; font-weight: 700; color: var(--text-primary); line-height: 1; }
-    .conf-date-year { font-size: 10px; color: var(--text-muted); }
-    .conf-name { font-size: 15px; font-weight: 600; color: var(--text-primary); margin-bottom: 6px; }
+    .conf-card::before { content: ''; position: absolute; left: 0; top: 4px; bottom: 4px; width: 3px; border-radius: 2px; opacity: 0; transition: opacity 0.2s; }
+    .conf-card:hover::before { opacity: 1; }
+    .conf-date { font-size: 12px; font-weight: 600; color: var(--accent-gold-dim); white-space: nowrap; }
+    .conf-name { font-size: 15px; font-weight: 600; color: var(--text-primary); margin-bottom: 4px; }
     .conf-detail { font-size: 12.5px; color: var(--text-muted); line-height: 1.6; }
-    .conf-meta { display: flex; gap: 12px; margin-top: 6px; flex-wrap: wrap; }
+    .conf-meta { display: flex; gap: 12px; margin-top: 4px; flex-wrap: wrap; }
     .conf-meta-item { font-size: 11.5px; color: var(--text-secondary); display: inline-flex; align-items: center; gap: 3px; }
-    .conf-tags { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
-    .conf-right { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; padding-top: 2px; }
+    .conf-tags { display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap; }
+    .conf-right { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; padding-top: 0; }
     .conf-status { font-size: 11px; font-weight: 500; padding: 3px 10px; border-radius: 12px; }
     .conf-status-open { background: oklch(0.22 0.06 148 / 0.4); color: var(--accent-green); }
     .conf-status-soon { background: oklch(0.22 0.06 82 / 0.4); color: var(--accent-gold); }
@@ -437,13 +436,11 @@
 
       /* === 会议 === */
       .conf-list { padding-left: 16px; padding-right: 16px; }
-      .conf-card { grid-template-columns: 56px 1fr; gap: 14px; padding: 14px 0; align-items: center; }
-      .conf-date-day { font-size: 22px; }
-      .conf-date-col { gap: 0; }
+      .conf-card { grid-template-columns: 1fr; gap: 8px; padding: 12px 0; }
       .conf-name { font-size: 13.5px; }
       .conf-detail { font-size: 11.5px; }
       .conf-meta-item { font-size: 10.5px; }
-      .conf-right { grid-column: 1 / -1; flex-direction: row; justify-content: flex-start; gap: 10px; padding-top: 0; }
+      .conf-right { flex-direction: row; justify-content: flex-start; gap: 10px; padding-top: 4px; }
       .conf-register { min-height: 36px; font-size: 11px; padding: 5px 12px; display: flex; align-items: center; }
       .conf-card:hover { padding-left: 8px; padding-right: 8px; margin: 0 -8px; }
 
@@ -921,8 +918,20 @@ function toggleSubsidyDetail(id) {
   }
 }
 
+var MONTH_NUM = {JAN:1,FEB:2,MAR:3,APR:4,MAY:5,JUN:6,JUL:7,AUG:8,SEP:9,OCT:10,NOV:11,DEC:12};
+function confDateSort(a, b) {
+  var ma = MONTH_NUM[a.month] || 0, mb = MONTH_NUM[b.month] || 0;
+  var da = (a.year||2026)*10000 + ma*100 + (a.day||0);
+  var db = (b.year||2026)*10000 + mb*100 + (b.day||0);
+  return da - db; // 日期由近到远
+}
+
 function renderConfCard(item) {
   if (!item.title || item.title.trim() === '') return ''; // 空标题骨架跳过
+  var MONTH_CN = {JAN:'1月',FEB:'2月',MAR:'3月',APR:'4月',MAY:'5月',JUN:'6月',JUL:'7月',AUG:'8月',SEP:'9月',OCT:'10月',NOV:'11月',DEC:'12月'};
+  var m = MONTH_CN[item.month] || (item.month||'');
+  var d = item.day || '';
+  var dateStr = m + d + '日';
   var statusCls = 'conf-status-'+item.status;
   var tagsHtml = (item.tags||[]).map(function(t){return '<span class="tag tag-news">'+t+'</span>';}).join("");
   var metaHtml = '';
@@ -933,7 +942,7 @@ function renderConfCard(item) {
   var btn = item.status !== "end"
     ? '<button class="conf-register" onclick="event.stopPropagation();window.open(\''+item.url+'\',\'_blank\')">报名参会 &#x2197;</button>'
     : '<button class="conf-register" style="opacity:.45;cursor:default">已结束</button>';
-  return '<div class="conf-card animate-in" onclick="window.open(\''+item.url+'\',\'_blank\')"><div class="conf-date-col"><span class="conf-date-month">'+item.month+'</span><span class="conf-date-day">'+item.day+'</span><span class="conf-date-year">'+item.year+'</span></div><div><div class="conf-name">'+item.title+'</div><div class="conf-detail">'+(item.excerpt||'')+'</div>'+metaHtml+'<div class="conf-tags">'+tagsHtml+'</div></div><div class="conf-right"><span class="conf-status '+statusCls+'">'+item.statusText||item.status||''+'</span>'+btn+'</div></div>';
+  return '<div class="conf-card animate-in" onclick="window.open(\''+item.url+'\',\'_blank\')"><div><div class="conf-date">'+dateStr+'</div><div class="conf-name">'+item.title+'</div><div class="conf-detail">'+(item.excerpt||'')+'</div>'+metaHtml+'<div class="conf-tags">'+tagsHtml+'</div></div><div class="conf-right"><span class="conf-status '+statusCls+'">'+item.statusText||item.status||''+'</span>'+btn+'</div></div>';
 }
 
 function todayCardColor(type) {
@@ -974,11 +983,13 @@ function renderUrgentSubsidies() {
 
 // 今日速递 - 本周会议
 function renderComingEvents() {
-  var evts = ALL_DATA.filter(function(d){ return d.type==='event' && d.title && d.title.trim() && (d.status==='open'||d.status==='soon'); }).slice(0, 3);
+  var evts = ALL_DATA.filter(function(d){ return d.type==='event' && d.title && d.title.trim() && (d.status==='open'||d.status==='soon'); }).sort(confDateSort).slice(0, 3);
+  var MONTH_CN2 = {JAN:'1月',FEB:'2月',MAR:'3月',APR:'4月',MAY:'5月',JUN:'6月',JUL:'7月',AUG:'8月',SEP:'9月',OCT:'10月',NOV:'11月',DEC:'12月'};
   var el = document.getElementById("today-coming-events");
   if (!el) return;
   el.innerHTML = evts.map(function(e){
-    return '<div class="today-quick-card" onclick="window.open(\''+e.url+'\',\'_blank\')"><div class="today-quick-card-label">'+e.month+' '+e.day+'</div><div class="today-quick-card-value">'+e.title+'</div><div style="font-size:11px;color:var(--text-muted);margin-top:4px;">'+(e.excerpt||'').substring(0,28)+'...</div></div>';
+    var ds = (MONTH_CN2[e.month]||e.month) + e.day + '日';
+    return '<div class="today-quick-card" onclick="window.open(\''+e.url+'\',\'_blank\')"><div class="today-quick-card-label">'+ds+'</div><div class="today-quick-card-value">'+e.title+'</div><div style="font-size:11px;color:var(--text-muted);margin-top:4px;">'+(e.excerpt||'').substring(0,28)+'...</div></div>';
   }).join("");
 }
 
@@ -1097,7 +1108,7 @@ function initAllPages() {
   var sel = document.getElementById("subsidy-grid");
   if (sel) sel.innerHTML = ALL_DATA.filter(function(d){return d.type==='subsidy';}).map(renderSubsidyCard).join("");
   var evl = document.getElementById("conf-list");
-  if (evl) evl.innerHTML = ALL_DATA.filter(function(d){return d.type==='event' && d.title && d.title.trim();}).map(renderConfCard).join("");
+  if (evl) evl.innerHTML = ALL_DATA.filter(function(d){return d.type==='event' && d.title && d.title.trim();}).sort(confDateSort).map(renderConfCard).join("");
 }
 
 // ─── 全部动态（归档检索） ───
