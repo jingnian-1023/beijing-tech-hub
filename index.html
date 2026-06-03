@@ -908,8 +908,8 @@ function getSubsidyDocuments(cat) {
 function renderSubsidyCard(item) {
   var isUrgent = item.deadline !== "常年申报" && item.deadline !== "各区不同";
   var cardId = 'subsidy-detail-' + item.id;
-  var conditions = getSubsidyConditions(item.cat);
-  var documents = getSubsidyDocuments(item.cat);
+  var conditions = item.conditions || ['具体条件以政策原文为准'];
+  var documents = item.docs || ['具体材料以政策原文要求为准'];
   return '<div class="subsidy-card-full animate-in">' +
     '<div class="subsidy-card-header">' +
       '<div class="subsidy-card-name">' + item.title + '</div>' +
