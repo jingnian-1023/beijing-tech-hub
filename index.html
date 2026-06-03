@@ -311,25 +311,33 @@
     .subsidy-detail-list li::before { content: "·"; position: absolute; left: 4px; color: var(--accent-gold-dim); }
 
     .conf-list { display: flex; flex-direction: column; gap: 0; padding: 0 40px; }
-    .conf-card { display: grid; grid-template-columns: 4px 1fr; background: transparent; border-bottom: 1px solid var(--border-subtle); padding: 18px 0 18px 16px; gap: 16px; cursor: pointer; transition: background 0.2s, padding-left 0.2s var(--ease-out-quart); position: relative; }
+    .conf-card { position: relative; padding: 20px 0 20px 0; border-bottom: 1px solid var(--border-subtle); cursor: pointer; transition: background 0.25s cubic-bezier(0.16,1,0.3,1); }
     .conf-card:first-child { border-top: 1px solid var(--border-subtle); }
-    .conf-card:hover { background: var(--bg-elevated); padding-left: 20px; }
-    .conf-card::before { content: ""; position: absolute; left: 16px; top: 0; bottom: 0; width: 4px; border-radius: 2px; background: var(--accent-gold-dim); opacity: 0; transition: opacity 0.2s; }
-    .conf-card:hover::before { opacity: 1; }
-    .conf-card-body { display: flex; flex-direction: column; gap: 6px; }
+    .conf-card:hover { background: var(--bg-elevated); }
+    /* 左强调线 — 渐变金色 */
+    .conf-card::before { content: ""; position: absolute; left: 0; top: 12px; bottom: 12px; width: 4px; border-radius: 0 4px 4px 0; background: linear-gradient(180deg, oklch(0.78 0.14 82/0.7) 0%, oklch(0.60 0.10 82/0.15) 100%); opacity: 0; transform: scaleY(0.6); transition: opacity 0.25s cubic-bezier(0.16,1,0.3,1), transform 0.25s cubic-bezier(0.16,1,0.3,1); }
+    .conf-card:hover::before { opacity: 1; transform: scaleY(1); }
+    /* 内容区带 left padding */
+    .conf-card-body { padding-left: 20px; transition: padding-left 0.25s cubic-bezier(0.16,1,0.3,1); display: flex; flex-direction: column; gap: 8px; }
+    .conf-card:hover .conf-card-body { padding-left: 24px; }
     .conf-card-header { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
-    .conf-card-title { font-size: 14.5px; font-weight: 500; color: var(--text-primary); line-height: 1.5; transition: color 0.15s; }
+    .conf-card-title { font-size: 15px; font-weight: 600; color: var(--text-primary); line-height: 1.5; letter-spacing: 0.01em; transition: color 0.2s cubic-bezier(0.16,1,0.3,1); }
     .conf-card:hover .conf-card-title { color: var(--accent-gold); }
-    .conf-card-excerpt { font-size: 13px; color: var(--text-muted); line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-    .conf-card-footer { display: flex; align-items: center; gap: 12px; margin-top: 2px; flex-wrap: wrap; }
-    .conf-card-date { font-size: 11.5px; color: var(--accent-gold-dim); font-variant-numeric: tabular-nums; font-weight: 600; }
-    .conf-card-location { font-size: 11.5px; color: var(--text-muted); }
-    .conf-card-status { font-size: 11px; font-weight: 500; padding: 2px 10px; border-radius: 12px; }
-    .conf-card-status-open { background: oklch(0.22 0.06 148 / 0.4); color: var(--accent-green); }
-    .conf-card-status-soon { background: oklch(0.22 0.06 82 / 0.4); color: var(--accent-gold); }
-    .conf-card-status-end  { background: oklch(0.20 0.02 248 / 0.4); color: var(--text-muted); }
-    .conf-card-link { font-size: 11.5px; color: var(--accent-gold-dim); display: inline-flex; align-items: center; gap: 4px; transition: color 0.15s; pointer-events: none; }
-    .conf-card:hover .conf-card-link { color: var(--accent-gold); }
+    /* 日期小标 */
+    .conf-card-date { font-size: 12px; font-weight: 600; color: var(--accent-gold-dim); letter-spacing: 0.04em; white-space: nowrap; padding: 2px 10px; background: oklch(0.22 0.06 82 / 0.25); border-radius: 10px; }
+    .conf-card-excerpt { font-size: 13px; color: var(--text-muted); line-height: 1.65; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .conf-card-footer { display: flex; align-items: center; gap: 10px; margin-top: 2px; flex-wrap: wrap; }
+    .conf-card-location { font-size: 12px; color: var(--text-muted); display: inline-flex; align-items: center; gap: 4px; }
+    .conf-card-location::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: oklch(0.52 0.012 245 / 0.5); flex-shrink: 0; }
+    .conf-card-footer-sep { width: 1px; height: 14px; background: var(--border-subtle); flex-shrink: 0; }
+    .conf-card-status { font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 12px; letter-spacing: 0.02em; }
+    .conf-card-status-open { background: oklch(0.22 0.07 148 / 0.4); color: var(--accent-green); }
+    .conf-card-status-soon { background: oklch(0.22 0.07 82 / 0.4); color: var(--accent-gold); }
+    .conf-card-status-end  { background: oklch(0.20 0.03 248 / 0.4); color: var(--text-muted); }
+    .conf-card-link { font-size: 12px; font-weight: 500; color: var(--accent-gold-dim); display: inline-flex; align-items: center; gap: 4px; margin-left: auto; transition: color 0.2s cubic-bezier(0.16,1,0.3,1), transform 0.2s cubic-bezier(0.16,1,0.3,1); }
+    .conf-card:hover .conf-card-link { color: var(--accent-gold); transform: translateX(2px); }
+    .conf-card-link::after { content: "→"; font-size: 14px; transition: transform 0.2s cubic-bezier(0.16,1,0.3,1); }
+    .conf-card:hover .conf-card-link::after { transform: translateX(2px); }
 
     .empty-state { text-align: center; padding: 60px 20px; color: var(--text-muted); }
     .empty-icon { font-size: 40px; margin-bottom: 12px; opacity: 0.4; }
@@ -437,11 +445,14 @@
       .subsidy-apply-btn, .subsidy-consult-btn { font-size: 11px; padding: 6px 14px; min-height: 40px; display: flex; align-items: center; }
 
       /* === 会议 === */
-      .conf-list { padding-left: 16px; padding-right: 16px; }
-      .conf-card { padding: 14px 0 14px 12px; gap: 10px; }
+      .conf-card { padding: 16px 0; }
+      .conf-card-body { padding-left: 16px; gap: 6px; }
+      .conf-card:hover .conf-card-body { padding-left: 18px; }
       .conf-card-title { font-size: 13.5px; }
+      .conf-card-date { font-size: 11px; padding: 1px 8px; }
       .conf-card-excerpt { font-size: 11.5px; }
-      .conf-card:hover { padding-left: 14px; }
+      .conf-card-location { font-size: 11px; }
+      .conf-card-link { font-size: 11px; }
 
       /* === 归档页 === */
       .archive-search-row { flex-direction: column; align-items: stretch; gap: 10px; }
@@ -932,15 +943,18 @@ function renderConfCard(item) {
   var statusCls = 'conf-card-status-'+item.status;
   var statusText = item.statusText || item.status || '';
   return '<div class="conf-card animate-in" onclick="window.open(\''+item.url+'\',\'_blank\')">'+
-    '<div></div>'+
     '<div class="conf-card-body">'+
-      '<div class="conf-card-header"><span class="conf-card-title">'+item.title+'</span><span class="conf-card-date">'+dateStr+'</span><span class="conf-card-status '+statusCls+'">'+statusText+'</span></div>'+
+      '<div class="conf-card-header">'+
+        '<span class="conf-card-title">'+item.title+'</span>'+
+        '<span class="conf-card-date">'+dateStr+'</span>'+
+        '<span class="conf-card-status '+statusCls+'">'+statusText+'</span>'+
+      '</div>'+
       '<div class="conf-card-excerpt">'+(item.excerpt||'')+'</div>'+
       '<div class="conf-card-footer">'+
         (item.location ? '<span class="conf-card-location">'+item.location+'</span>' : '')+
-        (item.location && item.org ? '<span style="font-size:11.5px;color:var(--text-muted)">|</span>' : '')+
+        (item.location && item.org ? '<span class="conf-card-footer-sep"></span>' : '')+
         (item.org ? '<span class="conf-card-location">'+item.org+'</span>' : '')+
-        '<span class="conf-card-link">报名参会 &#x2197;</span>'+
+        '<span class="conf-card-link">报名参会</span>'+
       '</div>'+
     '</div></div>';
 }
