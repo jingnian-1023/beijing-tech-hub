@@ -41,7 +41,7 @@ C:\Users\MR.Zhang\.workbuddy\binaries\python\envs\beijing-tech-hub\Scripts\pytho
 
    | 键 | 值 |
    |----|-----|
-   | `GITHUB_TOKEN` | `<YOUR_GITHUB_TOKEN>` |
+   | `GITHUB_TOKEN` | `<你的GitHub Personal Access Token>` |
    | `GITHUB_REPO` | `jingnian-1023/beijing-tech-hub` |
 
 5. **超时时间**设为 **120 秒**（采集需要时间）
