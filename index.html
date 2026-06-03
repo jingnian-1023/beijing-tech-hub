@@ -311,23 +311,25 @@
     .subsidy-detail-list li::before { content: "·"; position: absolute; left: 4px; color: var(--accent-gold-dim); }
 
     .conf-list { display: flex; flex-direction: column; gap: 0; padding: 0 40px; }
-    .conf-card { display: grid; grid-template-columns: 1fr auto; gap: 16px; padding: 16px 0; border-bottom: 1px solid var(--border-subtle); cursor: pointer; transition: background 0.15s, padding 0.2s var(--ease-out-quart); align-items: center; border-radius: var(--radius-sm); }
-    .conf-card:hover { background: var(--bg-surface); padding-left: 12px; padding-right: 12px; margin: 0 -12px; }
-    .conf-card::before { content: ''; position: absolute; left: 0; top: 4px; bottom: 4px; width: 3px; border-radius: 2px; opacity: 0; transition: opacity 0.2s; }
+    .conf-card { display: grid; grid-template-columns: 4px 1fr; background: transparent; border-bottom: 1px solid var(--border-subtle); padding: 18px 0 18px 16px; gap: 16px; cursor: pointer; transition: background 0.2s, padding-left 0.2s var(--ease-out-quart); position: relative; }
+    .conf-card:first-child { border-top: 1px solid var(--border-subtle); }
+    .conf-card:hover { background: var(--bg-elevated); padding-left: 20px; }
+    .conf-card::before { content: ""; position: absolute; left: 16px; top: 0; bottom: 0; width: 4px; border-radius: 2px; background: var(--accent-gold-dim); opacity: 0; transition: opacity 0.2s; }
     .conf-card:hover::before { opacity: 1; }
-    .conf-date { font-size: 12px; font-weight: 600; color: var(--accent-gold-dim); white-space: nowrap; }
-    .conf-name { font-size: 15px; font-weight: 600; color: var(--text-primary); margin-bottom: 4px; }
-    .conf-detail { font-size: 12.5px; color: var(--text-muted); line-height: 1.6; }
-    .conf-meta { display: flex; gap: 12px; margin-top: 4px; flex-wrap: wrap; }
-    .conf-meta-item { font-size: 11.5px; color: var(--text-secondary); display: inline-flex; align-items: center; gap: 3px; }
-    .conf-tags { display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap; }
-    .conf-right { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; padding-top: 0; }
-    .conf-status { font-size: 11px; font-weight: 500; padding: 3px 10px; border-radius: 12px; }
-    .conf-status-open { background: oklch(0.22 0.06 148 / 0.4); color: var(--accent-green); }
-    .conf-status-soon { background: oklch(0.22 0.06 82 / 0.4); color: var(--accent-gold); }
-    .conf-status-end  { background: oklch(0.20 0.02 248 / 0.4); color: var(--text-muted); }
-    .conf-register { font-size: 12px; font-weight: 500; padding: 6px 14px; background: oklch(0.25 0.08 82 / 0.3); border: 1px solid oklch(0.55 0.10 82 / 0.4); border-radius: var(--radius-sm); color: var(--accent-gold); transition: background 0.15s; }
-    .conf-register:hover { background: oklch(0.30 0.10 82 / 0.4); }
+    .conf-card-body { display: flex; flex-direction: column; gap: 6px; }
+    .conf-card-header { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .conf-card-title { font-size: 14.5px; font-weight: 500; color: var(--text-primary); line-height: 1.5; transition: color 0.15s; }
+    .conf-card:hover .conf-card-title { color: var(--accent-gold); }
+    .conf-card-excerpt { font-size: 13px; color: var(--text-muted); line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .conf-card-footer { display: flex; align-items: center; gap: 12px; margin-top: 2px; flex-wrap: wrap; }
+    .conf-card-date { font-size: 11.5px; color: var(--accent-gold-dim); font-variant-numeric: tabular-nums; font-weight: 600; }
+    .conf-card-location { font-size: 11.5px; color: var(--text-muted); }
+    .conf-card-status { font-size: 11px; font-weight: 500; padding: 2px 10px; border-radius: 12px; }
+    .conf-card-status-open { background: oklch(0.22 0.06 148 / 0.4); color: var(--accent-green); }
+    .conf-card-status-soon { background: oklch(0.22 0.06 82 / 0.4); color: var(--accent-gold); }
+    .conf-card-status-end  { background: oklch(0.20 0.02 248 / 0.4); color: var(--text-muted); }
+    .conf-card-link { font-size: 11.5px; color: var(--accent-gold-dim); display: inline-flex; align-items: center; gap: 4px; transition: color 0.15s; pointer-events: none; }
+    .conf-card:hover .conf-card-link { color: var(--accent-gold); }
 
     .empty-state { text-align: center; padding: 60px 20px; color: var(--text-muted); }
     .empty-icon { font-size: 40px; margin-bottom: 12px; opacity: 0.4; }
@@ -436,13 +438,10 @@
 
       /* === 会议 === */
       .conf-list { padding-left: 16px; padding-right: 16px; }
-      .conf-card { grid-template-columns: 1fr; gap: 8px; padding: 12px 0; }
-      .conf-name { font-size: 13.5px; }
-      .conf-detail { font-size: 11.5px; }
-      .conf-meta-item { font-size: 10.5px; }
-      .conf-right { flex-direction: row; justify-content: flex-start; gap: 10px; padding-top: 4px; }
-      .conf-register { min-height: 36px; font-size: 11px; padding: 5px 12px; display: flex; align-items: center; }
-      .conf-card:hover { padding-left: 8px; padding-right: 8px; margin: 0 -8px; }
+      .conf-card { padding: 14px 0 14px 12px; gap: 10px; }
+      .conf-card-title { font-size: 13.5px; }
+      .conf-card-excerpt { font-size: 11.5px; }
+      .conf-card:hover { padding-left: 14px; }
 
       /* === 归档页 === */
       .archive-search-row { flex-direction: column; align-items: stretch; gap: 10px; }
@@ -927,22 +926,23 @@ function confDateSort(a, b) {
 }
 
 function renderConfCard(item) {
-  if (!item.title || item.title.trim() === '') return ''; // 空标题骨架跳过
+  if (!item.title || item.title.trim() === '') return '';
   var MONTH_CN = {JAN:'1月',FEB:'2月',MAR:'3月',APR:'4月',MAY:'5月',JUN:'6月',JUL:'7月',AUG:'8月',SEP:'9月',OCT:'10月',NOV:'11月',DEC:'12月'};
-  var m = MONTH_CN[item.month] || (item.month||'');
-  var d = item.day || '';
-  var dateStr = m + d + '日';
-  var statusCls = 'conf-status-'+item.status;
-  var tagsHtml = (item.tags||[]).map(function(t){return '<span class="tag tag-news">'+t+'</span>';}).join("");
-  var metaHtml = '';
-  if (item.location) metaHtml += '<span class="conf-meta-item">&#x1F4CD; '+item.location+'</span>';
-  if (item.org) metaHtml += '<span class="conf-meta-item">&#x1F3DB; '+item.org+'</span>';
-  if (item.host) metaHtml += '<span class="conf-meta-item">&#x1F3A4; '+item.host+'</span>';
-  if (metaHtml) metaHtml = '<div class="conf-meta">'+metaHtml+'</div>';
-  var btn = item.status !== "end"
-    ? '<button class="conf-register" onclick="event.stopPropagation();window.open(\''+item.url+'\',\'_blank\')">报名参会 &#x2197;</button>'
-    : '<button class="conf-register" style="opacity:.45;cursor:default">已结束</button>';
-  return '<div class="conf-card animate-in" onclick="window.open(\''+item.url+'\',\'_blank\')"><div><div class="conf-date">'+dateStr+'</div><div class="conf-name">'+item.title+'</div><div class="conf-detail">'+(item.excerpt||'')+'</div>'+metaHtml+'<div class="conf-tags">'+tagsHtml+'</div></div><div class="conf-right"><span class="conf-status '+statusCls+'">'+item.statusText||item.status||''+'</span>'+btn+'</div></div>';
+  var dateStr = (MONTH_CN[item.month] || item.month || '') + (item.day || '') + '日';
+  var statusCls = 'conf-card-status-'+item.status;
+  var statusText = item.statusText || item.status || '';
+  return '<div class="conf-card animate-in" onclick="window.open(\''+item.url+'\',\'_blank\')">'+
+    '<div></div>'+
+    '<div class="conf-card-body">'+
+      '<div class="conf-card-header"><span class="conf-card-title">'+item.title+'</span><span class="conf-card-date">'+dateStr+'</span><span class="conf-card-status '+statusCls+'">'+statusText+'</span></div>'+
+      '<div class="conf-card-excerpt">'+(item.excerpt||'')+'</div>'+
+      '<div class="conf-card-footer">'+
+        (item.location ? '<span class="conf-card-location">'+item.location+'</span>' : '')+
+        (item.location && item.org ? '<span style="font-size:11.5px;color:var(--text-muted)">|</span>' : '')+
+        (item.org ? '<span class="conf-card-location">'+item.org+'</span>' : '')+
+        '<span class="conf-card-link">报名参会 &#x2197;</span>'+
+      '</div>'+
+    '</div></div>';
 }
 
 function todayCardColor(type) {
