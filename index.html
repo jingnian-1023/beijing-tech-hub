@@ -1439,14 +1439,30 @@ function clearGlobalSearch() {
   if (input) { input.value = ""; input.dispatchEvent(new Event("input")); }
 }
 
-/* ===== 今日日期显示 ===== */
-(function() {
+/* ===== 今日日期显示（从 data.json.updated 读取） ===== */
+var __UPDATED_DATE = "";
+
+function updateDateDisplay(updatedStr) {
   var el = document.getElementById("today-date-display");
   if (!el) return;
-  var now = new Date();
+  if (!updatedStr) {
+    // 兜底: 使用当前时间
+    var now = new Date();
+    var days = ["日", "一", "二", "三", "四", "五", "六"];
+    el.textContent = now.getFullYear() + "年" + (now.getMonth() + 1) + "月" + now.getDate() + "日 星期" + days[now.getDay()];
+    return;
+  }
+  __UPDATED_DATE = updatedStr;
+  var parts = updatedStr.split("-");
+  if (parts.length < 3) { el.textContent = updatedStr; return; }
+  var y = parseInt(parts[0], 10), m = parseInt(parts[1], 10), d = parseInt(parts[2], 10);
+  var date = new Date(y, m - 1, d);
   var days = ["日", "一", "二", "三", "四", "五", "六"];
-  el.textContent = now.getFullYear() + "年" + (now.getMonth() + 1) + "月" + now.getDate() + "日 星期" + days[now.getDay()];
-})();
+  el.textContent = y + "年" + m + "月" + d + "日 星期" + days[date.getDay()];
+  // 同步更新副标题的星期
+  var sm = document.querySelector(".today-hero-date-sm");
+  if (sm) sm.textContent = "星期" + days[date.getDay()];
+}
 
 /* ===== API 数据加载 ===== */
 var __apiOnline = false;
@@ -1507,7 +1523,8 @@ async function loadFromApi() {
       var hasItems = jsonData && jsonData.items && jsonData.items.length > 0;
       if (hasItems) {
         ALL_DATA = jsonData.items;
-        console.log("[京科枢] data.json loaded: " + jsonData.items.length + " items");
+        if (jsonData.updated) updateDateDisplay(jsonData.updated);
+        console.log("[京科枢] data.json loaded: " + jsonData.items.length + " items, updated: " + (jsonData.updated||"?"));
         return true;
       }
       console.log("[京科枢] data.json loaded but empty");
@@ -1540,6 +1557,8 @@ function refreshPageData() {
     console.error("[京科枢] loadFromApi failed:", e);
     ALL_DATA = [];
   }
+  // 数据加载失败时兜底显示当前日期
+  if (!__UPDATED_DATE) updateDateDisplay("");
   // 数据归一化（无论 API 还是静态都需要）
   ALL_DATA.forEach(function(d) {
     if (!d.title) d.title = d.name || "";
