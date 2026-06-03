@@ -8,8 +8,7 @@ import logging
 
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
-from database import database
-from models import ArticleFeed
+from database import database, url_hash_condition, cast_json, compute_url_hash, _is_sqlite
 from collector import collect_all
 
 logger = logging.getLogger(__name__)
@@ -24,24 +23,24 @@ async def _collect_and_persist() -> None:
         new_count = 0
         skipped = 0
 
-        await database.connect()
         for item in items:
-            # 检查是否已存在（URL 去重）
+            # URL 去重（Python 计算哈希，避免 SQL md5）
+            url_h = compute_url_hash(item.url)
             existing = await database.fetch_one(
-                "SELECT id FROM articles WHERE md5(url) = md5(:url)",
-                {"url": item.url},
+                f"SELECT id FROM articles WHERE {url_hash_condition()}",
+                {"url_hash": url_h, "url": item.url},
             )
             if existing:
                 skipped += 1
                 continue
 
             await database.execute(
-                """
+                f"""
                 INSERT INTO articles
-                    (type, cat, title, excerpt, source, url, time, raw, is_new, is_featured, is_urgent, status)
+                    (type, cat, title, excerpt, source, url, url_hash, time, raw, is_new, is_featured, is_urgent, status)
                 VALUES
-                    (:type, :cat, :title, :excerpt, :source, :url, :time,
-                     CAST(:raw AS jsonb), :is_new, :is_featured, :is_urgent, :status)
+                    (:type, :cat, :title, :excerpt, :source, :url, :url_hash, :time,
+                     {cast_json()}, :is_new, :is_featured, :is_urgent, :status)
                 """,
                 {
                     "type": item.type,
@@ -50,6 +49,7 @@ async def _collect_and_persist() -> None:
                     "excerpt": item.excerpt,
                     "source": item.source,
                     "url": item.url,
+                    "url_hash": url_h,
                     "time": item.time,
                     "raw": "{}",
                     "is_new": item.is_new,
@@ -60,7 +60,6 @@ async def _collect_and_persist() -> None:
             )
             new_count += 1
 
-        await database.disconnect()
         logger.info("Collect job done: %d new, %d skipped", new_count, skipped)
     except Exception as exc:
         logger.exception("Collect job failed: %s", exc)
@@ -74,7 +73,7 @@ def start_scheduler() -> None:
         hours=2,
         id="collect_job",
         replace_existing=True,
-        next_run_time=None,  # 启动后先等第一个间隔
+        next_run_time=None,
     )
     scheduler.start()
     logger.info("Scheduler started (interval=2h).")

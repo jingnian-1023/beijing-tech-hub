@@ -24,8 +24,29 @@ logger = logging.getLogger(__name__)
 # RSS 数据源定义
 # ============================================================
 
+# ---- 内容质量白名单 ----
+# 标题必须匹配至少一个关键词，否则丢弃
+# 目标用户：北京地区企业高管/创业者 → 关注产业政策、AI/科技趋势、大厂战略
+QUALITY_KEYWORDS: list[str] = [
+    "AI", "人工智能", "大模型", "GPT", "Claude", "Gemini", "DeepSeek", "ChatGPT",
+    "芯片", "半导体", "GPU", "算力",
+    "自动驾驶", "无人驾驶", "Robotaxi",
+    "低空经济", "无人机", "eVTOL",
+    "量子", "量子计算",
+    "新能源", "光伏", "储能", "电池", "氢能",
+    "机器人", "人形机器人",
+    "生物医药", "创新药", "基因",
+    "数字经济", "数字化转型",
+    "政策", "补贴", "扶持", "申报", "专项资金",
+    "中关村", "海淀", "亦庄", "北京",
+    "投融资", "融资", "IPO", "上市",
+    "字节", "百度", "阿里", "腾讯", "小米", "京东", "华为", "美团",
+    "OpenAI", "Google", "微软", "Meta", "NVIDIA", "英伟达",
+    "科技", "产业", "创新",
+]
+
 RSS_SOURCES: list[dict] = [
-    # ------ 科技新闻 ------
+    # ------ AI / 产业科技 ------
     {
         "name": "36氪",
         "url": "https://36kr.com/feed",
@@ -48,25 +69,11 @@ RSS_SOURCES: list[dict] = [
         "max_entries": 8,
     },
     {
-        "name": "虎嗅",
-        "url": "https://www.huxiu.com/rss/0.xml",
-        "type": "news",
-        "cat": "行业动态",
-        "max_entries": 10,
-    },
-    {
         "name": "新华网·科技",
         "url": "http://www.news.cn/tech/rss.xml",
         "type": "news",
         "cat": "政策动态",
         "max_entries": 10,
-    },
-    {
-        "name": "少数派",
-        "url": "https://sspai.com/feed",
-        "type": "news",
-        "cat": "科技前沿",
-        "max_entries": 5,
     },
     # ------ 政务 ------
     {
@@ -170,6 +177,15 @@ HTML_SOURCES: list[dict] = [
 ]
 
 
+def _passes_quality_filter(title: str) -> bool:
+    """标题关键词白名单：不含科技/产业相关关键词的内容直接丢弃。"""
+    title_lower = title.lower()
+    for kw in QUALITY_KEYWORDS:
+        if kw.lower() in title_lower:
+            return True
+    return False
+
+
 def _normalize_date(raw: str) -> Optional[date]:
     """尝试把各种日期字符串转为 date。"""
     if not raw:
@@ -231,8 +247,12 @@ async def fetch_rss(source: dict, timeout: int = 15) -> list[ArticleFeed]:
             if pub_date < week_ago:
                 continue
 
-            link = entry.get("link", "")
             title = _strip_html(entry.get("title", "") or "")
+            link = entry.get("link", "")
+            # 质量过滤：标题不含科技/产业关键词则丢弃
+            if not _passes_quality_filter(title):
+                continue
+
             summary = _strip_html(entry.get("summary", "") or entry.get("description", "") or "")
             if len(summary) > 120:
                 summary = summary[:120] + "..."
@@ -292,6 +312,9 @@ async def fetch_html(source: dict, timeout: int = 15) -> list[ArticleFeed]:
                 raw_date = date_el.get_text(strip=True)
             pub_date = _normalize_date(raw_date) or today
             if pub_date < week_ago:
+                continue
+            # 质量过滤：标题不含科技/产业/政策关键词则丢弃
+            if not _passes_quality_filter(title):
                 continue
 
             articles.append(ArticleFeed(

@@ -816,7 +816,8 @@ window.onerror = function(msg, url, line, col, err) {
 };
 
 // ─── API 配置 ───
-var API_BASE = window.location.origin;
+// 自动适配 Railway（根路径部署）和 GitHub Pages（子路径 /beijing-tech-hub/）
+var API_BASE = window.location.origin + window.location.pathname.replace(/\/+$/, '');
 // ─── 静态兜底数据（API 不可用时使用） ───
 const STATIC_DATA = [
   // ======== 政策（26条） ========
@@ -1792,6 +1793,145 @@ const STATIC_DATA = [
     url: "https://www.worldaic.com.cn",
     location: "北京朝阳大悦城会议中心", organizer: "世界人工智能大会组委会", host: ""
   },
+  // ======== 高含金量会议 · 新增（15条） ========
+  { id: 400, type: "event", cat: "产业峰会", isNew: true, isUrgent: true,
+    month: "JUN", day: 20, year: 2026, name: "2026北京自动驾驶产业峰会——亦庄专场",
+    detail: "亦庄经开区 · 百度Apollo/小马智行/滴滴自动驾驶齐聚 · 政策+技术+路测三轨并行",
+    tags: ["自动驾驶", "Robotaxi", "智能网联"], status: "open", statusText: "报名中",
+    url: "https://kfqgw.beijing.gov.cn",
+    location: "亦庄经开区", organizer: "北京市经信局/亦庄管委会", host: ""
+  },
+  { id: 401, type: "event", cat: "产业峰会", isNew: true, isUrgent: true,
+    month: "JUN", day: 25, year: 2026, name: "2026北京低空经济产业发展大会",
+    detail: "国家会议中心 · 民航局+北京市政府联合 · eVTOL适航审定+低空空域管理+应用场景签约",
+    tags: ["低空经济", "eVTOL", "无人机"], status: "open", statusText: "报名中",
+    url: "https://www.beijing.gov.cn",
+    location: "国家会议中心", organizer: "民航局/北京市政府", host: ""
+  },
+  { id: 402, type: "event", cat: "学术论坛", isNew: true,
+    month: "JUL", day: 5, year: 2026, name: "中关村生命科学园·生物医药创新与投融资峰会",
+    detail: "中关村生命科学园 · 创新药IND/NDA申报趋势+CXO产业变局 · 30家投资机构闭门对接",
+    tags: ["生物医药", "创新药", "投融资"], status: "soon", statusText: "即将开放",
+    url: "https://www.zgclsap.com",
+    location: "中关村生命科学园", organizer: "昌平区政府/中关村发展集团", host: ""
+  },
+  { id: 403, type: "event", cat: "产业峰会", isNew: true,
+    month: "JUL", day: 10, year: 2026, name: "2026中国数据要素市场化配置改革论坛（北京）",
+    detail: "北京国家会议中心 · 国家数据局指导 · 数据资产入表/确权/交易全链条解读",
+    tags: ["数据要素", "数据资产", "数据交易"], status: "soon", statusText: "筹备中",
+    url: "https://www.cde.org.cn",
+    location: "北京国家会议中心", organizer: "国家数据局/北京市政府", host: ""
+  },
+  { id: 404, type: "event", cat: "产业峰会", isNew: true,
+    month: "JUL", day: 15, year: 2026, name: "中关村5G+工业互联网融合发展大会",
+    detail: "中关村软件园 · 华为/中兴/用友联合承办 · 5G专网+工业AI质检+数字孪生工厂",
+    tags: ["5G", "工业互联网", "数字化转型"], status: "soon", statusText: "即将开放",
+    url: "https://www.zpark.com.cn",
+    location: "中关村软件园", organizer: "北京市经信局/中国信通院", host: ""
+  },
+  { id: 405, type: "event", cat: "路演对接", isNew: true,
+    month: "JUL", day: 22, year: 2026, name: "北交所·科技企业上市加速营（2026第三期）",
+    detail: "北京金融街 · 北交所专家1对1辅导 · 专精特新/小巨人企业IPO绿色通道政策解读",
+    tags: ["北交所", "IPO", "专精特新"], status: "soon", statusText: "预约中",
+    url: "https://www.bse.cn",
+    location: "北京金融街", organizer: "北交所/北京市金融局", host: ""
+  },
+  { id: 406, type: "event", cat: "学术论坛", isNew: true,
+    month: "AUG", day: 8, year: 2026, name: "2026 AI安全与治理国际论坛",
+    detail: "清华大学 · MIT/斯坦福/清华联合主办 · 大模型对齐/红队测试/监管沙盒前沿研讨",
+    tags: ["AI安全", "AI治理", "大模型"], status: "soon", statusText: "未开放报名",
+    url: "https://www.tsinghua.edu.cn",
+    location: "清华大学", organizer: "清华大学/北京智源研究院", host: ""
+  },
+  { id: 407, type: "event", cat: "路演对接", isNew: true,
+    month: "AUG", day: 15, year: 2026, name: "中关村新能源与碳中和产业技术对接会",
+    detail: "中关村东升科技园 · 钙钛矿/固态电池/氢能/CCUS四大专场 · 产业资本+应用场景双对接",
+    tags: ["新能源", "碳中和", "硬科技"], status: "soon", statusText: "即将开放",
+    url: "https://www.zhongguancun.com.cn",
+    location: "中关村东升科技园", organizer: "中关村管委会/北京市发改委", host: ""
+  },
+  { id: 408, type: "event", cat: "路演对接", isNew: true,
+    month: "AUG", day: 28, year: 2026, name: "中关村「专精特新」企业融资路演·硬科技专场",
+    detail: "中关村创业大街 · 20个精选硬科技项目 · 红杉/高瓴/深创投/中金等40家顶级机构参会",
+    tags: ["专精特新", "硬科技", "投融资"], status: "soon", statusText: "未开放报名",
+    url: "https://www.zhongguancun.com.cn",
+    location: "中关村创业大街", organizer: "中关村管委会/北京市经信局", host: ""
+  },
+  { id: 409, type: "event", cat: "科技展会", isNew: true,
+    month: "SEP", day: 5, year: 2026, name: "2026中国数字人/虚拟人产业峰会（北京站）",
+    detail: "北京国际会议中心 · 数字人+AI Agent+空间计算 · 百度/字节/商汤/科大讯飞主题演讲",
+    tags: ["数字人", "AI Agent", "虚拟现实"], status: "soon", statusText: "筹备中",
+    url: "https://www.ccf.org.cn",
+    location: "北京国际会议中心", organizer: "中国计算机学会/中关村管委会", host: ""
+  },
+  { id: 410, type: "event", cat: "产业峰会", isNew: true,
+    month: "SEP", day: 18, year: 2026, name: "2026中国算力产业大会·北京峰会",
+    detail: "国家会议中心 · 工信部指导 · 智算中心建设/算力调度/绿色算力/国产芯片适配全面覆盖",
+    tags: ["算力", "智算中心", "国产芯片"], status: "soon", statusText: "筹备中",
+    url: "https://www.miit.gov.cn",
+    location: "国家会议中心", organizer: "工信部/中国信通院", host: ""
+  },
+  { id: 411, type: "event", cat: "产业峰会", isNew: true,
+    month: "OCT", day: 10, year: 2026, name: "中关村AI芯片生态大会——国产替代与开源指令集",
+    detail: "中关村集成电路设计园 · 寒武纪/海光/燧原/地平线齐聚 · RISC-V生态+存算一体前沿",
+    tags: ["AI芯片", "国产替代", "RISC-V"], status: "soon", statusText: "筹备中",
+    url: "https://www.zgcicpark.com",
+    location: "中关村集成电路设计园", organizer: "中关村管委会/中国半导体行业协会", host: ""
+  },
+  { id: 412, type: "event", cat: "产业峰会", isNew: true,
+    month: "OCT", day: 22, year: 2026, name: "2026京港科技合作论坛暨AI产业对接会",
+    detail: "中关村国家自主创新示范区 · 香港科学园联动 · AI出海+跨境数据流通+国际化人才",
+    tags: ["京港合作", "AI出海", "跨境科技"], status: "soon", statusText: "筹备中",
+    url: "https://www.beijing.gov.cn",
+    location: "中关村国家自主创新示范区", organizer: "北京市科委/香港科技园", host: ""
+  },
+  { id: 413, type: "event", cat: "学术论坛", isNew: true,
+    month: "NOV", day: 5, year: 2026, name: "2026北京大模型生态大会——应用落地与开源共建",
+    detail: "北京国家会议中心 · DeepSeek/智谱/百川/零一万物/面壁同台 · 聚焦Agent+多模态+RAG",
+    tags: ["大模型", "开源", "Agent"], status: "soon", statusText: "未开放报名",
+    url: "https://www.baai.ac.cn",
+    location: "北京国家会议中心", organizer: "北京智源人工智能研究院", host: ""
+  },
+  { id: 414, type: "event", cat: "路演对接", isNew: true,
+    month: "NOV", day: 18, year: 2026, name: "中关村「金种子」2026年度总决赛——AI+赛道专场",
+    detail: "中关村展示中心 · 全国50强项目终极PK · 专业评委含院士/投资合伙人/产业龙头CTO",
+    tags: ["创业大赛", "AI", "投融资"], status: "soon", statusText: "未开放报名",
+    url: "https://www.zhongguancun.com.cn",
+    location: "中关村展示中心", organizer: "中关村管委会", host: ""
+  },
+
+  // ======== 高含金量补贴 · 新增（6条） ========
+  { id: 420, type: "subsidy", cat: "算力补贴", isNew: true,
+    title: "北京市AI企业算力券补贴——训练/推理算力补贴50%，年最高500万",
+    amount: "500", unit: "万/年", desc: "AI企业在北京市认定智算中心购买算力服务，按实际支出50%发放算力券，单个企业年度最高500万，连补3年。训练+推理均可。",
+    org: "北京市经信局", deadline: "常年申报", url: "https://jxj.beijing.gov.cn"
+  },
+  { id: 421, type: "subsidy", cat: "算力补贴", isNew: false,
+    title: "中关村智算中心入驻企业电费补贴——按电费30%补贴，最高200万/年",
+    amount: "200", unit: "万/年", desc: "入驻中关村各智算中心/数据中心的AI企业，按实际电费支出补贴30%，年度最高200万，连补2年。",
+    org: "中关村管委会", deadline: "常年申报", url: "https://zgcgw.beijing.gov.cn"
+  },
+  { id: 422, type: "subsidy", cat: "低空经济", isNew: true,
+    title: "北京市低空经济创新应用示范项目——最高800万研发+测试空域优先",
+    amount: "800", unit: "万", desc: "eVTOL/无人机企业在京开展适航审定、试飞验证、城市空中交通(UAM)应用示范，最高800万资助+优先分配测试空域。",
+    org: "北京市经信局/民航华北局", deadline: "2026-11-30", url: "https://jxj.beijing.gov.cn"
+  },
+  { id: 423, type: "subsidy", cat: "高新技术", isNew: true,
+    title: "北京市6G通信技术预先研究专项——企业牵头最高1200万",
+    amount: "1200", unit: "万", desc: "面向6G太赫兹通信/智能超表面/通感一体化/AI原生空口等方向，企业牵头联合高校申报，单项最高1200万。",
+    org: "北京市科委", deadline: "2026-12-15", url: "https://pm.kw.beijing.gov.cn"
+  },
+  { id: 424, type: "subsidy", cat: "数据资产", isNew: true,
+    title: "北京市数据资产入表试点企业专项补贴——最高100万+专业审计辅导",
+    amount: "100", unit: "万", desc: "首批数据资产入表试点企业，按数据治理/确权/评估/入表全流程费用补贴50%，最高100万+免费审计辅导。",
+    org: "北京市财政局/数据局", deadline: "2026-09-30", url: "https://czj.beijing.gov.cn"
+  },
+  { id: 425, type: "subsidy", cat: "研发补贴", isNew: true,
+    title: "北京市脑机接口前沿技术研发专项——单项目最高1500万",
+    amount: "1500", unit: "万", desc: "面向侵入式/非侵入式脑机接口、神经信号编解码、脑控外骨骼等关键技术方向，企业/医院联合申报，单项最高1500万。",
+    org: "北京市科委/中关村管委会", deadline: "2026-10-31", url: "https://pm.kw.beijing.gov.cn"
+  },
+
   // ======== 12:00 增量更新（2026-06-02） ========
   { id: 109, type: "policy", cat: "市级", isNew: true,
     title: "北京市科委启动2026年度合成生物制造领域储备课题征集，助力生物经济新质生产力培育",
@@ -1834,6 +1974,93 @@ const STATIC_DATA = [
     excerpt: "6月2日COMPUTEX开幕，AMD展示新一代AI加速处理器，英特尔发布下一代酷睿Ultra AI PC平台，高通推出第四代骁龙X Elite系列AI PC芯片，三大芯片巨头正面交锋引爆AI PC算力竞争。",
     source: "C114/凤凰科技", time: "2026-06-02",
     url: "https://www.c114.net.cn/industry/86014.html"
+  },
+
+  // ======== 18:00 增量更新（2026-06-02） ========
+  { id: 116, type: "policy", cat: "市级", isNew: true,
+    title: "北京市卫星物联网行业发展大会在海淀举办，宣布筹建太空算力产业创新中心",
+    excerpt: "6月1日海淀区举办卫星物联网行业发展大会，宣布2026年北京太空算力大会将于6月29-30日在海淀举办，届时揭牌太空算力产业创新中心并组建专家委员会与产业创新联盟。",
+    source: "北京市海淀区政府/百度新闻", time: "2026-06-02",
+    url: "https://baijiahao.baidu.com/s?id=1866795180015856148"
+  },
+  { id: 117, type: "news", cat: "人工智能", isNew: true,
+    title: "中科院自动化所开源MobileGym：浏览器秒变安卓仿真平台，低成本训练手机AI Agent",
+    excerpt: "中科院自动化所模式识别实验室开源MobileGym，运行在浏览器中的高并发安卓仿真平台，支持28个日常App，单实例仅占约400MB内存，可替代模拟器和真机进行Agent训练。",
+    source: "新智元/中科院自动化所", time: "2026-06-02",
+    url: "https://finance.sina.com.cn/stock/t/2026-06-02/doc-inhzysxu3340441.shtml"
+  },
+  { id: 118, type: "news", cat: "人工智能", isNew: true,
+    title: "北京海淀OPC一人公司创业成效显现：AI赋能下素源矩阵一年拿下近3000万订单",
+    excerpt: "北京海淀多位OPC创业者借助AI工具低成本启动创业，海淀区出台八项政策扶持OPC创业生态，素源矩阵等典型企业成立一年即获近3000万订单，AI驱动的超级个体模式加速成型。",
+    source: "AITNT/海淀区", time: "2026-06-02",
+    url: "https://www.aitntnews.com/newDetail.html?newId=25752"
+  },
+  { id: 119, type: "corp", cat: "微软", isNew: true,
+    title: "微软Build 2026开发者大会旧金山开幕：AI Agent从助理升级为自主操作员",
+    excerpt: "6月2日微软Build 2026在旧金山开幕，CEO纳德拉展示Copilot新能力与Azure AI集成，发布50+AI开发工具，Agent从辅助升级为自主操作，GitHub Copilot同步更新，AI开发进入Agent优先新时代。",
+    source: "wanyr/微软官方", time: "2026-06-02",
+    url: "https://wanyr.com/2026/06/%E5%BE%AE%E8%BD%AFbuild-2026%E5%BC%80%E5%8F%91%E8%80%85%E5%A4%A7%E4%BC%9A%E5%BC%80%E5%B9%95%EF%BC%9Aai%E8%83%BD%E5%8A%9B%E5%85%A8%E9%9D%A2%E5%8D%87%E7%BA%A7%EF%BC%8C%E5%B7%A5%E5%85%B7%E9%93%BE.html"
+  },
+  { id: 120, type: "corp", cat: "企业数据", isNew: true,
+    title: "智谱宣布拟科创板上市募资150亿，80%投向AI基座大模型，大模型双雄加速回A",
+    excerpt: "6月1日智谱在港交所公告拟申请发行A股并在科创板上市，建议发行量占总股本2%-8%，募资150亿元，80%用于AI基座大模型研发。此前MiniMax已提交A股IPO辅导备案，大模型双雄有望科创板会师。",
+    source: "科创板日报/腾讯新闻", time: "2026-06-02",
+    url: "http://3g.cnfol.com/xg_stock/xinguyaowen/20260602/32267440.shtml"
+  },
+  { id: 121, type: "corp", cat: "字节跳动", isNew: true,
+    title: "字节Seed预训练负责人顾全全离职，AI4S团队三个月连失核心成员",
+    excerpt: "6月2日字节跳动Seed旗下AI4S团队核心成员顾全全官宣离职，他在字节期间打造多个性能领先的生物分子和蛋白质AI模型，或投身AI4S创业。AI4S团队三个月内已连续多位核心成员出走。",
+    source: "机器之心/腾讯新闻", time: "2026-06-02",
+    url: "https://news.qq.com/rain/a/20260602A07IGJ00"
+  },
+  { id: 122, type: "subsidy", cat: "标准化", isNew: true,
+    title: "2026年首都标准化战略补助资金申报启动——国际标准最高100万，6月30日截止",
+    amount: "20-100", unit: "万", desc: "北京市市场监管局启动首都标准化战略补助资金征集，国际标准项目最高100万，国家标准30万，行业标准/团体标准/地方标准各20万。京津冀协同标准另加5万，承担国际标准组织秘书处工作100万。",
+    org: "北京市市场监管局", deadline: "2026-06-30", url: "https://news.qq.com/rain/a/20260601A03VSI00"
+  },
+  { id: 123, type: "event", cat: "产业峰会", isNew: true, isUrgent: true,
+    month: "JUN", day: 29, year: 2026, name: "2026年北京太空算力大会——卫星物联网+太空算力融合创新",
+    detail: "北京市海淀区 · 揭牌「北京市太空算力产业创新中心」· 组建专家委员会与产业创新联盟 · 聚焦卫星物联网与AI算力协同",
+    tags: ["太空算力", "卫星物联网", "AI"], status: "soon", statusText: "即将开放",
+    url: "https://baijiahao.baidu.com/s?id=1866795180015856148",
+    location: "北京市海淀区", organizer: "北京市海淀区政府/卫星物联网行业协会", host: ""
+  },
+  // ======== 18:00 第二次增量（2026-06-02 下午） ========
+  { id: 124, type: "policy", cat: "国家级", isNew: true,
+    title: "四部门联合启动"剑网2026"专项行动，6月起首次将AI生成内容纳入版权治理重点",
+    excerpt: "国家版权局联合工信部、公安部、网信办启动第22次剑网行动，6月至11月开展，首次将AI生成内容及短视频版权治理纳入重点领域，严查利用AI批量生成侵权作品。",
+    source: "新华社/国家版权局", time: "2026-06-02",
+    url: "https://www.news.cn/legal/20260602/e26a5ca6692b4d4fa22c7705e18894f2/c.html"
+  },
+  { id: 125, type: "news", cat: "人工智能", isNew: true,
+    title: "阿里通义千问正式发布Qwen3.7-Plus：视觉语言一体化智能体基座，跨框架泛化能力突出",
+    excerpt: "6月2日阿里发布Qwen3.7-Plus多模态模型，将视觉与语言统一为一体化智能体基座，在编码、工具使用和生产力工作流保持完整能力，通过Claude Code、Qwen Code等多框架部署均稳定。",
+    source: "新浪财经/智通财经", time: "2026-06-02",
+    url: "https://finance.sina.com.cn/jjxw/2026-06-02/doc-inhzzcpq3220951.shtml"
+  },
+  { id: 126, type: "news", cat: "人工智能", isNew: true,
+    title: "姚期智Bengio张亚勤联署《IDAIS伦敦宣言》，全球顶尖AI科学家呼吁协同防范AI安全威胁",
+    excerpt: "图灵奖得主姚期智、Yoshua Bengio及清华张亚勤等在2026年IDAIS签署《伦敦宣言》，呼吁各国正视AI网络攻击与生物滥用风险协同防范，为国际AI安全治理最权威共识文件之一。",
+    source: "新浪财经/CSDN", time: "2026-06-02",
+    url: "https://blog.csdn.net/haohaizi_liu/article/details/161624019"
+  },
+  { id: 127, type: "corp", cat: "阿里", isNew: true,
+    title: "Qwen3.7-Plus发布点燃港股科技板块，阿里巴巴收涨6.6%报130.9港元",
+    excerpt: "6月2日阿里港股收涨6.6%报130.9港元，美股盘前涨超6%报133.23美元。Qwen3.7-Plus发布提振AI能力预期，带动美团涨8%、腾讯涨7%，恒生科技指数大涨3.48%结束连跌。",
+    source: "东方财富/新浪财经", time: "2026-06-02",
+    url: "https://finance.eastmoney.com/a/202606023757383738.html"
+  },
+  { id: 128, type: "corp", cat: "美团", isNew: true,
+    title: "美团2026年Q1收入910亿超预期，AI应用端盈利兑现驱动港股涨超8%",
+    excerpt: "美团发布2026年Q1财报，收入910.39亿元同比增长5.6%，市场解读AI驱动的即时零售与本地生活业务盈利加速兑现。港股单日涨超8%领涨恒生科技板块。",
+    source: "腾讯新闻/东方财富", time: "2026-06-02",
+    url: "https://news.qq.com/rain/a/20260602A04D7N00"
+  },
+  { id: 129, type: "corp", cat: "腾讯", isNew: true,
+    title: "港股科技股久违集体爆发：腾讯涨超7%领衔反弹，恒生科技指数涨3.48%终结连跌",
+    excerpt: "6月2日港股科网股集体大涨，腾讯涨超7%领涨，哔哩哔哩涨超5%，联想涨超4%，比亚迪涨超6%。恒生科技指数收涨3.48%，市场对AI驱动盈利重燃信心。",
+    source: "新浪财经/东方财富", time: "2026-06-02",
+    url: "https://finance.sina.cn/hkstock/sckxjfx/2026-06-02/detail-inhzysxv1798464.d.html?vt=4"
   },
 ];
 
@@ -2501,47 +2728,89 @@ function normalizeApiItem(d) {
   return d;
 }
 
+// 合并策略：API 数据只替换 news+policy，corp/subsidy/event 永久保留静态精选
+function mergeApiWithStatic(apiItems) {
+  // 分离 API 数据和静态数据
+  var apiNews = [], apiPolicy = [];
+  for (var i = 0; i < apiItems.length; i++) {
+    var item = normalizeApiItem(apiItems[i]);
+    if (item.type === "news") apiNews.push(item);
+    else if (item.type === "policy") apiPolicy.push(item);
+  }
+
+  // 保留静态数据中的 corp / subsidy / event（人工精选）
+  var kept = [];
+  for (var i = 0; i < STATIC_DATA.length; i++) {
+    var s = STATIC_DATA[i];
+    if (s.type === "corp" || s.type === "subsidy" || s.type === "event") {
+      kept.push(s);
+    }
+  }
+
+  // 如果 API 有数据，用 API 的 news+policy 替换静态中的对应部分
+  // 如果 API 没数据（空列表），保留静态的 news+policy
+  var newsFinal = apiNews.length > 0 ? apiNews : STATIC_DATA.filter(function(d){return d.type==="news";});
+  var policyFinal = apiPolicy.length > 0 ? apiPolicy : STATIC_DATA.filter(function(d){return d.type==="policy";});
+
+  var merged = kept.concat(newsFinal, policyFinal);
+
+  // 去重：URL 相同只保留一条
+  var seen = {};
+  var deduped = [];
+  for (var i = 0; i < merged.length; i++) {
+    var key = merged[i].url || (merged[i].title ? merged[i].title.substring(0, 50) : "") + "_" + i;
+    if (!seen[key]) {
+      seen[key] = true;
+      deduped.push(merged[i]);
+    }
+  }
+
+  console.log("[京科枢] Merged: API news=" + apiNews.length + " policy=" + apiPolicy.length + " + static corp/subsidy/event=" + kept.length + " → " + deduped.length + " total");
+  return deduped;
+}
+
 async function loadFromApi() {
   var badge = document.getElementById("api-status-badge");
   if (badge) badge.textContent = "加载中…";
 
-  // Layer 1: 实时 API
+  // Layer 1: 同源 data.json（GitHub Pages / Railway 静态文件，最快）
   try {
-    var resp = await fetch(API_BASE + "/api/news?limit=2000", {
-      headers: { "Accept": "application/json" },
-      signal: AbortSignal.timeout(8000),
+    var resp = await fetch(API_BASE + "/data.json", {
+      signal: AbortSignal.timeout(3000),
     });
     if (resp.ok) {
-      var data = await resp.json();
-      if (data && data.items && data.items.length > 0) {
-        ALL_DATA = data.items.map(normalizeApiItem);
-        updateApiStatus(true);
-        console.log("[京科枢] API loaded: " + data.items.length + " items");
+      updateApiStatus(true);
+      var jsonData = await resp.json();
+      var hasItems = jsonData && jsonData.items && jsonData.items.length > 0;
+      if (hasItems) {
+        ALL_DATA = mergeApiWithStatic(jsonData.items);
+        console.log("[京科枢] data.json loaded: " + jsonData.items.length + " items, merged → " + ALL_DATA.length);
+        return true;
+      }
+      console.log("[京科枢] data.json loaded but empty, fallback to static");
+    }
+  } catch (e) { console.log("[京科枢] data.json unavailable:", e.message); }
+
+  // Layer 2: API 实时数据（仅 Railway 环境有效）
+  try {
+    var resp2 = await fetch(API_BASE + "/api/news?limit=2000", {
+      headers: { "Accept": "application/json" },
+      signal: AbortSignal.timeout(3000),
+    });
+    if (resp2.ok) {
+      updateApiStatus(true);
+      var data2 = await resp2.json();
+      if (data2 && data2.items && data2.items.length > 0) {
+        ALL_DATA = mergeApiWithStatic(data2.items);
+        console.log("[京科枢] API loaded: " + data2.items.length + " items, merged → " + ALL_DATA.length);
         return true;
       }
     }
   } catch (e) { console.log("[京科枢] /api/news unavailable:", e.message); }
 
-  // Layer 2: 静态 data.json（采集器定时生成）
-  try {
-    var resp2 = await fetch(API_BASE + "/data.json", {
-      signal: AbortSignal.timeout(5000),
-    });
-    if (resp2.ok) {
-      var jsonData = await resp2.json();
-      if (jsonData && jsonData.items && jsonData.items.length > 0) {
-        ALL_DATA = jsonData.items.map(normalizeApiItem);
-        updateApiStatus(true);
-        console.log("[京科枢] data.json loaded: " + jsonData.items.length + " items (collected: " + jsonData.updated + ")");
-        return true;
-      }
-    }
-  } catch (e) { console.log("[京科枢] data.json unavailable:", e.message); }
-
   // Layer 3: 内置静态兜底
   ALL_DATA = STATIC_DATA.slice();
-  updateApiStatus(false);
-  console.log("[京科枢] Using static fallback: " + ALL_DATA.length + " items");
+  console.log("[京科枢] Static fallback: " + ALL_DATA.length + " items");
   return false;
 }
 

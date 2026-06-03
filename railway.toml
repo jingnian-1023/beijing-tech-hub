@@ -16,4 +16,4 @@ healthcheckPath = "/api/health"
 # 环境变量
 [service.env]
 PYTHONUNBUFFERED = "1"
-DATABASE_URL = "sqlite:///./beijing_tech_hub.db"
+DATABASE_URL = "sqlite+aiosqlite:///./beijing_tech_hub.db"
