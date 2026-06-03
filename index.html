@@ -2769,15 +2769,29 @@ function mergeApiWithStatic(apiItems) {
   return deduped;
 }
 
+// 兼容旧浏览器的 fetch + timeout
+function fetchWithTimeout(url, options, timeoutMs) {
+  return new Promise(function(resolve, reject) {
+    var timer = setTimeout(function() {
+      reject(new Error("timeout"));
+    }, timeoutMs);
+    fetch(url, options).then(function(resp) {
+      clearTimeout(timer);
+      resolve(resp);
+    }).catch(function(err) {
+      clearTimeout(timer);
+      reject(err);
+    });
+  });
+}
+
 async function loadFromApi() {
   var badge = document.getElementById("api-status-badge");
   if (badge) badge.textContent = "加载中…";
 
   // Layer 1: 同源 data.json（GitHub Pages / Railway 静态文件，最快）
   try {
-    var resp = await fetch(API_BASE + "/data.json", {
-      signal: AbortSignal.timeout(3000),
-    });
+    var resp = await fetchWithTimeout(API_BASE + "/data.json", {}, 3000);
     if (resp.ok) {
       updateApiStatus(true);
       var jsonData = await resp.json();
@@ -2793,10 +2807,9 @@ async function loadFromApi() {
 
   // Layer 2: API 实时数据（仅 Railway 环境有效）
   try {
-    var resp2 = await fetch(API_BASE + "/api/news?limit=2000", {
-      headers: { "Accept": "application/json" },
-      signal: AbortSignal.timeout(3000),
-    });
+    var resp2 = await fetchWithTimeout(API_BASE + "/api/news?limit=2000", {
+      headers: { "Accept": "application/json" }
+    }, 3000);
     if (resp2.ok) {
       updateApiStatus(true);
       var data2 = await resp2.json();
@@ -2828,7 +2841,12 @@ function refreshPageData() {
 
 /* ===== 页面加载启动（异步：先调 API 再渲染） ===== */
 (async function(){
-  var apiOk = await loadFromApi();
+  try {
+    var apiOk = await loadFromApi();
+  } catch (e) {
+    console.error("[京科枢] loadFromApi failed:", e);
+    ALL_DATA = STATIC_DATA.slice();
+  }
   // 数据归一化（无论 API 还是静态都需要）
   ALL_DATA.forEach(function(d) {
     if (!d.title) d.title = d.name || "";
