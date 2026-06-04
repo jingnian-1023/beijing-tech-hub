@@ -1,6 +1,6 @@
 {
   "updated": "2026-06-04",
-  "count": 210,
+  "count": 211,
   "items": [
     {
       "id": 55,
@@ -4949,38 +4949,51 @@
     {
       "type": "news",
       "cat": "人工智能",
+      "title": "LeCun 10亿押注的方向，全球领先视觉大模型团队早已布局",
+      "excerpt": "”隐空间世界模型很难，但我们一定要做“",
+      "source": "量子位",
+      "url": "https://www.qbitai.com/2026/06/428790.html",
+      "time": "2026-06-04",
+      "isNew": true,
+      "isFeatured": false,
+      "isUrgent": false,
+      "status": ""
+    },
+    {
+      "type": "news",
+      "cat": "人工智能",
+      "title": "一个GPT Plus会员的钱，够机器人跑一个月世界模型了",
+      "excerpt": "不多不少，只要150",
+      "source": "量子位",
+      "url": "https://www.qbitai.com/2026/06/428791.html",
+      "time": "2026-06-04",
+      "isNew": true,
+      "isFeatured": false,
+      "isUrgent": false,
+      "status": ""
+    },
+    {
+      "type": "news",
+      "cat": "人工智能",
+      "title": "戴盟机器人完成亿元融资，阿里通义多模态大牛加盟攻关物理世界模型",
+      "excerpt": "甩开视觉内卷",
+      "source": "量子位",
+      "url": "https://www.qbitai.com/2026/06/428778.html",
+      "time": "2026-06-04",
+      "isNew": true,
+      "isFeatured": false,
+      "isUrgent": false,
+      "status": ""
+    },
+    {
+      "type": "news",
+      "cat": "人工智能",
       "title": "从看懂世界到做对动作，卧安机器人OneModel 1.7用一条「隐式通路」打通了具身智能的关键断层",
       "excerpt": "在潜在空间中完成信息传导",
       "source": "量子位",
       "url": "https://www.qbitai.com/2026/06/428703.html",
       "time": "2026-06-03",
       "isNew": true,
-      "isFeatured": false,
-      "isUrgent": false,
-      "status": ""
-    },
-    {
-      "type": "news",
-      "cat": "人工智能",
-      "title": "刚刚，Meta Skill来了",
-      "excerpt": "GitHub最新火爆仓库：OpenSquilla。",
-      "source": "量子位",
-      "url": "https://www.qbitai.com/2026/06/428335.html",
-      "time": "2026-06-03",
-      "isNew": true,
-      "isFeatured": false,
-      "isUrgent": false,
-      "status": ""
-    },
-    {
-      "type": "news",
-      "cat": "人工智能",
-      "title": "OpenAI挖走中科大少年班校友！12岁上大学，哈佛史上最年轻正教授",
-      "excerpt": "还挖走了苏炜杰",
-      "source": "量子位",
-      "url": "https://www.qbitai.com/2026/06/428003.html",
-      "time": "2026-06-02",
-      "isNew": false,
       "isFeatured": false,
       "isUrgent": false,
       "status": ""
