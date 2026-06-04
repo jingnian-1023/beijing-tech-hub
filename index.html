@@ -605,7 +605,7 @@
     <section class="page-section active" id="page-today">
       <div class="today-hero">
         <div class="today-hero-tag">今日速递 · 实时更新</div>
-        <div><span class="today-hero-date" id="today-date-display">2026年6月1日</span><span class="today-hero-date-sm">星期一</span></div>
+        <div><span class="today-hero-date" id="today-date-display">加载中…</span><span class="today-hero-date-sm"></span></div>
         <p class="today-hero-sub">今日北京科技要闻速览——政策/补贴/会议/大厂动态一页尽览，面向决策者的每日信息早餐</p>
         <div class="today-hero-stats">
           <div class="today-stat"><span class="today-stat-num" id="stat-today-count">15</span><span class="today-stat-label">今日更新</span></div>
@@ -1516,7 +1516,8 @@ async function loadFromApi() {
 
   // 唯一数据源：data.json（由 SCF 采集 + static-data.json 合并生成）
   try {
-    var resp = await fetchWithTimeout(API_BASE + "/data.json", {}, 3000);
+    var cacheBuster = "?_t=" + Date.now();
+    var resp = await fetchWithTimeout(API_BASE + "/data.json" + cacheBuster, {}, 8000);
     if (resp.ok) {
       updateApiStatus(true);
       var jsonData = await resp.json();
