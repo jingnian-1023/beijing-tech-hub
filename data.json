@@ -1,6 +1,6 @@
 {
   "updated": "2026-06-08",
-  "count": 247,
+  "count": 248,
   "items": [
     {
       "id": 55,
@@ -5571,6 +5571,19 @@
     {
       "type": "policy",
       "cat": "市级",
+      "title": "关于公示2026年北京地区优秀科普图书作品和科普微视频推荐名单的通知",
+      "excerpt": "",
+      "source": "北京市科委·通知公告",
+      "url": "https://kw.beijing.gov.cn/zwgk/tzgg/202606/t20260608_4691159.html",
+      "time": "2026-06-08",
+      "isNew": true,
+      "isFeatured": false,
+      "isUrgent": false,
+      "status": ""
+    },
+    {
+      "type": "policy",
+      "cat": "市级",
       "title": "北京市自然科学基金委员会办公室关于发布2026年度北京市自然科学基金拟资助项目的公告",
       "excerpt": "",
       "source": "北京市科委·通知公告",
@@ -5627,19 +5640,6 @@
       "excerpt": "",
       "source": "北京市科委·通知公告",
       "url": "https://kw.beijing.gov.cn/zwgk/zcwj/202606/t20260601_4680315.html",
-      "time": "2026-06-08",
-      "isNew": true,
-      "isFeatured": false,
-      "isUrgent": false,
-      "status": ""
-    },
-    {
-      "type": "policy",
-      "cat": "市级",
-      "title": "关于北京市2026年第一批市级中试平台项目初步培育名单的公示",
-      "excerpt": "",
-      "source": "北京市科委·通知公告",
-      "url": "https://kw.beijing.gov.cn/zwgk/tzgg/202606/t20260601_4680252.html",
       "time": "2026-06-08",
       "isNew": true,
       "isFeatured": false,
@@ -5731,6 +5731,19 @@
       "excerpt": "",
       "source": "北京市发改委·通知通告",
       "url": "https://fgw.beijing.gov.cn/fgwzwgk/2024zcwj/bwqtwj/202606/t20260603_4684213.htm",
+      "time": "2026-06-08",
+      "isNew": true,
+      "isFeatured": false,
+      "isUrgent": false,
+      "status": ""
+    },
+    {
+      "type": "policy",
+      "cat": "市级",
+      "title": "关于北京市2026年第一批市级中试平台项目初步培育名单的公示",
+      "excerpt": "",
+      "source": "北京市发改委·通知通告",
+      "url": "https://fgw.beijing.gov.cn/fgwzwgk/2024zcwj/bwqtwj/202606/t20260601_4680588.htm",
       "time": "2026-06-08",
       "isNew": true,
       "isFeatured": false,
