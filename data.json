@@ -1,6 +1,6 @@
 {
   "updated": "2026-08-20",
-  "count": 249,
+  "count": 250,
   "items": [
     {
       "id": 55,
@@ -5809,6 +5809,19 @@
       "excerpt": "",
       "source": "北京市财政局·通知公告",
       "url": "https://czj.beijing.gov.cn/zwxx/tztg/202608/t20260805_4810157.html",
+      "time": "2026-08-20",
+      "isNew": true,
+      "isFeatured": false,
+      "isUrgent": false,
+      "status": ""
+    },
+    {
+      "type": "policy",
+      "cat": "市级",
+      "title": "北京市财政局关于开展2026年度市级部门会计信息质量监督检查单位的公示",
+      "excerpt": "",
+      "source": "北京市财政局·通知公告",
+      "url": "https://czj.beijing.gov.cn/zwxx/tztg/202608/t20260820_4830061.html",
       "time": "2026-08-20",
       "isNew": true,
       "isFeatured": false,
